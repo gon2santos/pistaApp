@@ -1,0 +1,23 @@
+.nombresContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.nombresInput{
+  margin-top: 5px;
+  margin-left: 3px;
+  margin-right: 4px;
+}
+
+.hrDashed{
+  margin-top: 20px;
+  color: rgba(0, 0, 255, 0);
+  border-top: 3px dashed #bbb;
+}
+
+.crearBtnContainer{
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+

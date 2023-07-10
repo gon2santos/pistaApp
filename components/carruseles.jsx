@@ -1,7 +1,7 @@
 export default function Carruseles() {
     return (
         <div>
-            <h1>Componente Carruseles</h1>
+            <h3>Buscador de Carruseles</h3>
         </div>
     )
 }

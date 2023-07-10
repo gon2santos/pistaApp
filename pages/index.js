@@ -1,52 +1,59 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import { useState } from 'react';
+import Planillas from '../components/planillas';
+import Carruseles from '../components/carruseles';
+import Vuelos from '../components/vuelos';
 
 export default function Home() {
 
   var stl = [styles.cardEnable, styles.cardDisable, styles.cardDisable];
   const [buttonStyle, setButtonStyle] = useState(stl);
+  const [mainComponent, setMainComponent] = useState(<Planillas />);
 
   const HandleNavBtn = (num) => {
     stl = [styles.cardDisable, styles.cardDisable, styles.cardDisable];
     stl[num] = styles.cardEnable;
     setButtonStyle(stl);
+    switch (num) {
+      case 0:
+        setMainComponent(<Planillas />);
+        break;
+      case 1:
+        setMainComponent(<Carruseles />);
+        break;
+      case 2:
+        setMainComponent(<Vuelos />);
+        break;
+    }
   };
 
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
-
-
-
+        <div className={styles.componentMarginBottom}>
+          {mainComponent}
+        </div>
 
         <div className={styles.grid}>
           <a /* href="https://nextjs.org/docs" */ className={buttonStyle[0]} onClick={() => HandleNavBtn(0)}>
-            <h3>Planillas ✏️</h3>
+            <h3>Planillas<br />✏️</h3>
           </a>
           <a /* href="https://nextjs.org/docs" */ className={buttonStyle[1]} onClick={() => HandleNavBtn(1)}>
-            <h3>Carruseles 🎠</h3>
+            <h3>Carruseles<br />🎠</h3>
           </a>
           <a /* href="https://nextjs.org/docs" */ className={buttonStyle[2]} onClick={() => HandleNavBtn(2)}>
-            <h3>Vuelos ✈️</h3>
+            <h3>Vuelos<br />✈️</h3>
           </a>
         </div>
       </main>
 
       <style jsx>{`
-        main {
-          padding: 5rem 0;
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
         code {
           background: #fafafa;
           border-radius: 5px;
@@ -58,6 +65,19 @@ export default function Home() {
       `}</style>
 
       <style jsx global>{`
+      table {
+        margin-top: 1rem;
+        border-collapse: collapse;
+        width: 100%;
+        }
+        td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 5px;
+        }
+        tr:nth-child(even) {
+        background-color: #dddddd;
+        }
         html,
         body {
           padding: 0;
