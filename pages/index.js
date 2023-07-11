@@ -4,6 +4,8 @@ import { useState } from 'react';
 import Planillas from '../components/planillas';
 import Carruseles from '../components/carruseles';
 import Vuelos from '../components/vuelos';
+import { store } from '../redux/store'
+import { Provider } from 'react-redux'
 
 export default function Home() {
 
@@ -29,31 +31,32 @@ export default function Home() {
   };
 
   return (
-    <div>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <Provider store={store}>
+      <div>
+        <Head>
+          <title>Create Next App</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
 
-      <main>
-        <div className={styles.componentMarginBottom}>
-          {mainComponent}
-        </div>
+        <main>
+          <div className={styles.componentMarginBottom}>
+            {mainComponent}
+          </div>
 
-        <div className={styles.grid}>
-          <a /* href="https://nextjs.org/docs" */ className={buttonStyle[0]} onClick={() => HandleNavBtn(0)}>
-            <h3>Planillas<br />✏️</h3>
-          </a>
-          <a /* href="https://nextjs.org/docs" */ className={buttonStyle[1]} onClick={() => HandleNavBtn(1)}>
-            <h3>Carruseles<br />🎠</h3>
-          </a>
-          <a /* href="https://nextjs.org/docs" */ className={buttonStyle[2]} onClick={() => HandleNavBtn(2)}>
-            <h3>Vuelos<br />✈️</h3>
-          </a>
-        </div>
-      </main>
+          <div className={styles.grid}>
+            <a /* href="https://nextjs.org/docs" */ className={buttonStyle[0]} onClick={() => HandleNavBtn(0)}>
+              <h3>Planillas<br />✏️</h3>
+            </a>
+            <a /* href="https://nextjs.org/docs" */ className={buttonStyle[1]} onClick={() => HandleNavBtn(1)}>
+              <h3>Carruseles<br />🧳</h3>
+            </a>
+            <a /* href="https://nextjs.org/docs" */ className={buttonStyle[2]} onClick={() => HandleNavBtn(2)}>
+              <h3>Vuelos<br />✈️</h3>
+            </a>
+          </div>
+        </main>
 
-      <style jsx>{`
+        <style jsx>{`
         code {
           background: #fafafa;
           border-radius: 5px;
@@ -64,7 +67,7 @@ export default function Home() {
         }
       `}</style>
 
-      <style jsx global>{`
+        <style jsx global>{`
       table {
         margin-top: 1rem;
         border-collapse: collapse;
@@ -91,6 +94,7 @@ export default function Home() {
           box-sizing: border-box;
         }
       `}</style>
-    </div>
+      </div>
+    </Provider>
   )
 }
