@@ -71,6 +71,7 @@ export default function Home() {
         width: 100%;
         }
         td, th {
+        white-space: nowrap;
         border: 1px solid #dddddd;
         text-align: left;
         padding: 5px;
