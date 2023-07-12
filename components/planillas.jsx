@@ -18,7 +18,7 @@ export default function Planillas() {
         return (daysInMonth(month, year));
     }
 
-    let heading = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"]
+    let heading = ["Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"]
     var body = [];
     var rows = [];
 
@@ -84,14 +84,14 @@ export default function Planillas() {
                 <table>
                     <thead>
                         <tr>
-                            {heading.map((head) =>
-                                <th>{head}</th>)}
+                            {heading.map((head, i) =>
+                                <th key={i}>{head}</th>)}
                         </tr>
                     </thead>
                     <tbody>
-                        {body.map((row) =>
-                            <tr>
-                                {row.map((val) => <td>{val}</td>)}
+                        {body.map((row, i) =>
+                            <tr key={i}>
+                                {row.map((val, i) => <td key={i}>{val}</td>)}
                             </tr>)}
                     </tbody>
                 </table>
