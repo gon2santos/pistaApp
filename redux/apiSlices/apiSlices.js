@@ -11,9 +11,12 @@ export const pistaApi = createApi({
         getPistaByName: builder.query({
             query: () => `carruseles/`,
         }),
+        getFlights: builder.query({
+            query: () => `flights/`,
+        }),
     }),
 })
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetPistaByNameQuery } = pistaApi
+export const { useGetPistaByNameQuery, useGetFlightsQuery } = pistaApi
