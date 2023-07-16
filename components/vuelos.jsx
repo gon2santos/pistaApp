@@ -1,10 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGetFlightsQuery } from "../redux/apiSlices/apiSlices"
 import styles from '../styles/vuelos.module.css';
 
 export default function Vuelos() {
 
     const { data, error, isLoading } = useGetFlightsQuery()
+    useEffect(() => {
+        error ? {}
+            : isLoading ? {}
+                : data ?
+                    onChangeValue({ target: { value: "m" } })
+                    : {};
+    }, [data]);
     const [filteredData, setFilteredData] = useState(data ? data : null);
     const [checkBoxState, setCheckBoxState] = useState(true);
     let heading = ["Linea", "Vuelo", "Destino", "Salida"]
@@ -71,7 +78,6 @@ export default function Vuelos() {
                     setFilteredData(filteredData.filter((f) => { if (f.airline_iata === "AR") return f }));
                 break;
             case false:
-                console.log(currentTurno);
                 onChangeValue({ target: { value: currentTurno } });
                 break;
         }
@@ -99,52 +105,48 @@ export default function Vuelos() {
             <div className={styles.vuelosContainer}>
                 {error ? (<>Oh no, there was an error</>)
                     : isLoading ? (<>Loading...</>)
-                        : data ?
-                            filteredData ?
-                                (
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                {heading.map((head) =>
-                                                    <th key={head}>{head}</th>)}
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {/* {(resultData.carousel) ? (resultData.carousel === '-') ? <tr><td>Sin resultados</td></tr> : (<tr key={resultData.id}><td key={resultData.id + 'a'}>{resultData.airportCode}</td><td key={resultData.id + 'b'}>{resultData.flightCode}</td><td key={resultData.id + 'c'}>{resultData.carousel}</td></tr>) : */}
-                                            {(filteredData.map(e => {
-                                                return (<tr key={e.flight_iata}>
-                                                    <td key={e.flight_iata + 'a'}> <img src={logoDict[e.airline_iata]} alt="logo" width="50" height="auto" /> </td>
-                                                    <td key={e.flight_iata + 'b'}>{e.flight_iata}</td>
-                                                    <td key={e.flight_iata + 'c'}>{e.arr_iata}</td>
-                                                    <td key={e.flight_iata + 'd'}>{convertDate(e.dep_time_ts)}</td>
-                                                </tr>)
-                                            }))}
-                                        </tbody>
-                                    </table>
-                                )
-                                :
-                                (
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                {heading.map((head) =>
-                                                    <th key={head}>{head}</th>)}
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {/* {(resultData.carousel) ? (resultData.carousel === '-') ? <tr><td>Sin resultados</td></tr> : (<tr key={resultData.id}><td key={resultData.id + 'a'}>{resultData.airportCode}</td><td key={resultData.id + 'b'}>{resultData.flightCode}</td><td key={resultData.id + 'c'}>{resultData.carousel}</td></tr>) : */}
-                                            {(data.map(e => {
-                                                return (<tr key={e.flight_iata}>
-                                                    <td key={e.flight_iata + 'a'}> <img src={logoDict[e.airline_iata]} alt="logo" width="50" height="auto" /> </td>
-                                                    <td key={e.flight_iata + 'b'}>{e.flight_iata}</td>
-                                                    <td key={e.flight_iata + 'c'}>{e.arr_iata}</td>
-                                                    <td key={e.flight_iata + 'd'}>{convertDate(e.dep_time_ts)}</td>
-                                                </tr>)
-                                            }))}
-                                        </tbody>
-                                    </table>
-                                )
-                            /* (<>{data.response.map(e => <p key={e.flight_iata}>Vuelo: {e.flight_iata} Destino: {e.arr_iata} Hora Salida:{e.dep_time_ts}</p>)}</>) */
+                        : data ? filteredData ?
+                            (
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            {heading.map((head) =>
+                                                <th key={head}>{head}</th>)}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {(filteredData.map(e => {
+                                            return (<tr key={e.flight_iata}>
+                                                <td key={e.flight_iata + 'a'}> <img src={logoDict[e.airline_iata]} alt="logo" width="50" height="auto" /> </td>
+                                                <td key={e.flight_iata + 'b'}>{e.flight_iata}</td>
+                                                <td key={e.flight_iata + 'c'}>{e.arr_iata}</td>
+                                                <td key={e.flight_iata + 'd'}>{convertDate(e.dep_time_ts)}</td>
+                                            </tr>)
+                                        }))}
+                                    </tbody>
+                                </table>
+                            )
+                            :
+                            (
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            {heading.map((head) =>
+                                                <th key={head}>{head}</th>)}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {(data.map(e => {
+                                            return (<tr key={e.flight_iata}>
+                                                <td key={e.flight_iata + 'a'}> <img src={logoDict[e.airline_iata]} alt="logo" width="50" height="auto" /> </td>
+                                                <td key={e.flight_iata + 'b'}>{e.flight_iata}</td>
+                                                <td key={e.flight_iata + 'c'}>{e.arr_iata}</td>
+                                                <td key={e.flight_iata + 'd'}>{convertDate(e.dep_time_ts)}</td>
+                                            </tr>)
+                                        }))}
+                                    </tbody>
+                                </table>
+                            )
                             : null}
             </div>
         </div>
