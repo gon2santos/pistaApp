@@ -1,4 +1,19 @@
 .vuelosContainer{
     border: 1px solid white;
-    width: 90%;
+    height: 540px;
+    overflow-y: scroll;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.radioButton {
+    display: inline;
+    margin-left: 0.5rem;
+}
+
+.radioButtonContainer {
+    display: flex;
+    flex-direction: row;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }

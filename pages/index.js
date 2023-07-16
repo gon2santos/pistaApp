@@ -69,15 +69,23 @@ export default function Home() {
 
         <style jsx global>{`
       table {
-        margin-top: 1rem;
         border-collapse: collapse;
         width: 100%;
         }
-        td, th {
+        td {
         white-space: nowrap;
         border: 1px solid #dddddd;
         text-align: left;
         padding: 5px;
+        }
+        th {
+        white-space: nowrap;
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 5px;
+        position: sticky;
+        top: 0;
+        background-color: #dddddd;
         }
         tr:nth-child(even) {
         background-color: #dddddd;

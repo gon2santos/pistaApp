@@ -3,3 +3,10 @@
     height: 500px;
     margin-top: 20px;
 }
+
+.carruselesContainer{
+    border: 1px solid white;
+    height: 540px;
+    overflow-y: scroll;
+    width: 90%;
+}

@@ -55,7 +55,7 @@ export default function Carruseles() {
                 <input placeholder={`"VVI" , "1500" , "SLA" ...`} onChange={(e) => setInputData(e.target.value)}></input>
                 <button onClick={() => handleSearch(inputData)}>🔍</button>
             </div>
-            <div className="App">
+            <div className={styles.carruselesContainer}>
                 {error ? (
                     <>Oh no, there was an error</>
                 ) : isLoading ? (
