@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGetFlightsQuery } from "../redux/apiSlices/apiSlices"
 import styles from '../styles/vuelos.module.css';
 
@@ -16,6 +16,7 @@ export default function Vuelos() {
     const [checkBoxState, setCheckBoxState] = useState(true);
     let heading = ["Linea", "Vuelo", "Destino", "Salida"]
     const [currentTurno, setCurrentTurno] = useState("null");
+    var checkBoxRef = useRef(null);
     var logoDict = {
         AR: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Aerol%C3%ADneas_Argentinas_Logo_2010.svg/320px-Aerol%C3%ADneas_Argentinas_Logo_2010.svg.png",
         G3: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/GOL_logo.svg/150px-GOL_logo.svg.png",
@@ -43,6 +44,8 @@ export default function Vuelos() {
     }
 
     const onChangeValue = function (e) {
+        if (!checkBoxState)
+            checkBoxRef.current.checked = false;
         switch (e.target.value) {
             case "m": //entre 7 y 15 (1689530400)
                 setCurrentTurno("m");
@@ -97,7 +100,7 @@ export default function Vuelos() {
                     <label htmlFor="Noche">Noche</label></div>
             </div>
             <div>
-                <input type="checkbox" id="scales" name="scales" onChange={onChangeCheckbox} />
+                <input type="checkbox" id="scales" name="scales" onChange={onChangeCheckbox} ref={checkBoxRef} />
                 <label htmlFor="scales">Ver solo Aerolineas Argentinas</label>
             </div>
 
@@ -111,12 +114,12 @@ export default function Vuelos() {
                                     <thead>
                                         <tr>
                                             {heading.map((head) =>
-                                                <th key={head}>{head}</th>)}
+                                                <th key={head + "b"}>{head}</th>)}
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {(filteredData.map(e => {
-                                            return (<tr key={e.flight_iata}>
+                                            return (<tr key={e.flight_iata + "x"}>
                                                 <td key={e.flight_iata + 'a'}> <img src={logoDict[e.airline_iata]} alt="logo" width="50" height="auto" /> </td>
                                                 <td key={e.flight_iata + 'b'}>{e.flight_iata}</td>
                                                 <td key={e.flight_iata + 'c'}>{e.arr_iata}</td>
@@ -132,12 +135,12 @@ export default function Vuelos() {
                                     <thead>
                                         <tr>
                                             {heading.map((head) =>
-                                                <th key={head}>{head}</th>)}
+                                                <th key={head + "a"}>{head}</th>)}
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {(data.map(e => {
-                                            return (<tr key={e.flight_iata}>
+                                            return (<tr key={e.dep_time_ts + e.flight_iata}>
                                                 <td key={e.flight_iata + 'a'}> <img src={logoDict[e.airline_iata]} alt="logo" width="50" height="auto" /> </td>
                                                 <td key={e.flight_iata + 'b'}>{e.flight_iata}</td>
                                                 <td key={e.flight_iata + 'c'}>{e.arr_iata}</td>

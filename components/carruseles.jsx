@@ -51,9 +51,9 @@ export default function Carruseles() {
             <button onClick={() => dispatch(increment())}>Incrementar valor</button>
             <button onClick={() => dispatch(decrement())}>Decrementar valor</button> */}
             <h3>Buscador de Carruseles</h3>
-            <div>
-                <input placeholder={`"VVI" , "1500" , "SLA" ...`} onChange={(e) => setInputData(e.target.value)}></input>
-                <button onClick={() => handleSearch(inputData)}>🔍</button>
+            <div className={styles.searchBar}>
+                <input className={styles.searchInput} placeholder={`"VVI" , "1500" , "SLA" ...`} onChange={(e) => setInputData(e.target.value)}></input>
+                <button className={styles.searchBtn} onClick={() => handleSearch(inputData)}>🔍</button>
             </div>
             <div className={styles.carruselesContainer}>
                 {error ? (

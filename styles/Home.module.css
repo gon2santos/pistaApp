@@ -37,7 +37,7 @@
   align-items: center;
   justify-content: space-around;
   text-align: center;
-  border: 1px solid #eaeaea;
+  border: 4px solid  rgb(82, 82, 82);
   flex-direction: row;
   white-space: nowrap;
   width: 100%;
@@ -53,6 +53,7 @@
   background-color: #131516;
   width: 100%;
   height: 100%;
+  cursor: default;
 }
 
 .cardEnable {
@@ -63,6 +64,7 @@
   background-color: rgb(82, 82, 82);
   width: 100%;
   height: 100%;
+  cursor: default;
 }
 
 .logo {

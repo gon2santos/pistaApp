@@ -7,6 +7,10 @@
   margin-top: 5px;
   margin-left: 3px;
   margin-right: 4px;
+  background-color: #34383b;
+  border: solid rgb(146, 146, 146) 1px;
+  border-radius: 20px;
+  color: #c4c4c4;
 }
 
 .hrDashed{

@@ -4,3 +4,32 @@
     overflow-y: scroll;
     width: 100%;
 }
+
+.searchBar{
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: solid rgb(146, 146, 146) 2px;
+    border-radius: 20px;
+    width: fit-content;
+}
+
+.searchInput{
+    background-color: #34383b;
+    border: none;
+    border-radius: 20px;
+    color: #c4c4c4;
+    height: 100%;
+    /* padding: 0.5rem; */
+    font-size: 1.3rem;
+    padding-left: 0.5rem;
+}
+
+.searchBtn{
+    background-color: #34383b00;
+    border: none;
+    font-size: 100%;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}

@@ -76,24 +76,26 @@ export default function Home() {
         }
         td {
         white-space: nowrap;
-        border: 1px solid #dddddd;
+        border: 1px solid black;
         text-align: left;
         padding: 5px;
         }
         th {
         white-space: nowrap;
-        border: 1px solid #dddddd;
+        border: 1px solid black;
         text-align: left;
         padding: 5px;
         position: sticky;
         top: 0;
-        background-color: #dddddd;
+        background-color: black;
         }
         tr:nth-child(even) {
-        background-color: #dddddd;
+        background-color: #313538;
         }
         html,
         body {
+          color: #c4c4c4;
+          background: #181a1b;
           padding: 0;
           margin: 0;
           font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
