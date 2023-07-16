@@ -5,7 +5,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 export const pistaApi = createApi({
     reducerPath: 'pistaApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'http://127.0.0.1:3000'
+        baseUrl: 'https://pista-app-back.vercel.app'
     }),
     endpoints: (builder) => ({
         getPistaByName: builder.query({
