@@ -1,12 +1,6 @@
-.resultsContainer{
-    border: 1px solid white;
-    height: 500px;
-    margin-top: 20px;
-}
-
 .carruselesContainer{
     border: 1px solid white;
-    height: 540px;
+    height: 480px;
     overflow-y: scroll;
-    width: 90%;
+    width: 100%;
 }

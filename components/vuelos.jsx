@@ -1,10 +1,14 @@
+import { useState } from "react";
 import { useGetFlightsQuery } from "../redux/apiSlices/apiSlices"
 import styles from '../styles/vuelos.module.css';
 
 export default function Vuelos() {
 
     const { data, error, isLoading } = useGetFlightsQuery()
+    const [filteredData, setFilteredData] = useState(data ? data : null);
+    const [checkBoxState, setCheckBoxState] = useState(true);
     let heading = ["Linea", "Vuelo", "Destino", "Salida"]
+    const [currentTurno, setCurrentTurno] = useState("null");
     var logoDict = {
         AR: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Aerol%C3%ADneas_Argentinas_Logo_2010.svg/320px-Aerol%C3%ADneas_Argentinas_Logo_2010.svg.png",
         G3: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/GOL_logo.svg/150px-GOL_logo.svg.png",
@@ -24,28 +28,71 @@ export default function Vuelos() {
         AF: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Air_France_Logo.svg/300px-Air_France_Logo.svg.png"
     }
 
+
     const convertDate = (unixtime) => {
         var newDate = new Date();
         newDate.setTime(unixtime * 1000);
         return (`${newDate.toTimeString().split(" ")[0]}`)
     }
 
+    const onChangeValue = function (e) {
+        switch (e.target.value) {
+            case "m": //entre 7 y 15 (1689530400)
+                setCurrentTurno("m");
+                setFilteredData(data.filter((f) => { if ((f.timeHr >= 7) && (f.timeHr < 15)) return f }));
+                break;
+            case "t": //entre 15 (1689530400) y 23 
+                setCurrentTurno("t");
+                setFilteredData(data.filter((f) => { if ((f.timeHr >= 15) && (f.timeHr < 23)) return f }));
+                break;
+            case "n": //entre 23 y 7
+                setCurrentTurno("n");
+                const d = new Date();
+                let hourNow = d.getHours();
+                if ((hourNow >= 0) && (hourNow < 7))
+                    setFilteredData(data.filter((f) => { if ((f.timeHr >= 0) && (f.timeHr <= 7)) return f }));
+                else if ((hourNow >= 22))
+                    setFilteredData(data.filter((f) => { if (f.timeHr >= 22) return f }));
+                else
+                    setFilteredData(data.filter((f) => { if (f.timeHr >= 22) return f }));
+                break;
+            default:
+                setCurrentTurno("null");
+                setFilteredData(data);
+                break;
+        }
+    }
+
+    const onChangeCheckbox = function (e) {
+        setCheckBoxState(!checkBoxState);
+        switch (checkBoxState) {
+            case true:
+                (filteredData === null) ? setFilteredData(data.filter((f) => { if (f.airline_iata === "AR") return f })) :
+                    setFilteredData(filteredData.filter((f) => { if (f.airline_iata === "AR") return f }));
+                break;
+            case false:
+                console.log(currentTurno);
+                onChangeValue({ target: { value: currentTurno } });
+                break;
+        }
+    }
+
     return (
         <div>
             <h3>Lista de Vuelos</h3>
 
-            <div className={styles.radioButtonContainer}>
+            <div className={styles.radioButtonContainer} onChange={onChangeValue}>
                 <span>Filtrar Turno:</span>
-                <div className={styles.radioButton}><input type="radio" id="Mañana" value="Mañana" />
-                    <label for="Mañana">Mañana</label></div><br />
-                <div className={styles.radioButton}><input type="radio" id="Tarde" value="Tarde" />
-                    <label for="Tarde">Tarde</label></div><br />
-                <div className={styles.radioButton}><input type="radio" id="Noche" value="Noche" />
-                    <label for="Noche">Noche</label></div>
+                <div className={styles.radioButton}><input type="radio" name="turnoRad" id="Mañana" value="m" defaultChecked="true" />
+                    <label htmlFor="Mañana">Mañana</label></div><br />
+                <div className={styles.radioButton}><input type="radio" name="turnoRad" id="Tarde" value="t" />
+                    <label htmlFor="Tarde">Tarde</label></div><br />
+                <div className={styles.radioButton}><input type="radio" name="turnoRad" id="Noche" value="n" />
+                    <label htmlFor="Noche">Noche</label></div>
             </div>
             <div>
-                <input type="checkbox" id="scales" name="scales" checked />
-                <label for="scales">Ver solo Aerolineas Argentinas</label>
+                <input type="checkbox" id="scales" name="scales" onChange={onChangeCheckbox} />
+                <label htmlFor="scales">Ver solo Aerolineas Argentinas</label>
             </div>
 
 
@@ -53,27 +100,50 @@ export default function Vuelos() {
                 {error ? (<>Oh no, there was an error</>)
                     : isLoading ? (<>Loading...</>)
                         : data ?
-                            (
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            {heading.map((head) =>
-                                                <th key={head}>{head}</th>)}
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {/* {(resultData.carousel) ? (resultData.carousel === '-') ? <tr><td>Sin resultados</td></tr> : (<tr key={resultData.id}><td key={resultData.id + 'a'}>{resultData.airportCode}</td><td key={resultData.id + 'b'}>{resultData.flightCode}</td><td key={resultData.id + 'c'}>{resultData.carousel}</td></tr>) : */}
-                                        {(data/* .response */.map(e => {
-                                            return (<tr key={e.flight_iata}>
-                                                <td key={e.flight_iata + 'a'}> <img src={logoDict[e.airline_iata]} alt="logo" width="50" height="auto" /> </td>
-                                                <td key={e.flight_iata + 'b'}>{e.flight_iata}</td>
-                                                <td key={e.flight_iata + 'c'}>{e.arr_iata}</td>
-                                                <td key={e.flight_iata + 'd'}>{convertDate(e.dep_time_ts)}</td>
-                                            </tr>)
-                                        }))}
-                                    </tbody>
-                                </table>
-                            )
+                            filteredData ?
+                                (
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                {heading.map((head) =>
+                                                    <th key={head}>{head}</th>)}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {/* {(resultData.carousel) ? (resultData.carousel === '-') ? <tr><td>Sin resultados</td></tr> : (<tr key={resultData.id}><td key={resultData.id + 'a'}>{resultData.airportCode}</td><td key={resultData.id + 'b'}>{resultData.flightCode}</td><td key={resultData.id + 'c'}>{resultData.carousel}</td></tr>) : */}
+                                            {(filteredData.map(e => {
+                                                return (<tr key={e.flight_iata}>
+                                                    <td key={e.flight_iata + 'a'}> <img src={logoDict[e.airline_iata]} alt="logo" width="50" height="auto" /> </td>
+                                                    <td key={e.flight_iata + 'b'}>{e.flight_iata}</td>
+                                                    <td key={e.flight_iata + 'c'}>{e.arr_iata}</td>
+                                                    <td key={e.flight_iata + 'd'}>{convertDate(e.dep_time_ts)}</td>
+                                                </tr>)
+                                            }))}
+                                        </tbody>
+                                    </table>
+                                )
+                                :
+                                (
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                {heading.map((head) =>
+                                                    <th key={head}>{head}</th>)}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {/* {(resultData.carousel) ? (resultData.carousel === '-') ? <tr><td>Sin resultados</td></tr> : (<tr key={resultData.id}><td key={resultData.id + 'a'}>{resultData.airportCode}</td><td key={resultData.id + 'b'}>{resultData.flightCode}</td><td key={resultData.id + 'c'}>{resultData.carousel}</td></tr>) : */}
+                                            {(data.map(e => {
+                                                return (<tr key={e.flight_iata}>
+                                                    <td key={e.flight_iata + 'a'}> <img src={logoDict[e.airline_iata]} alt="logo" width="50" height="auto" /> </td>
+                                                    <td key={e.flight_iata + 'b'}>{e.flight_iata}</td>
+                                                    <td key={e.flight_iata + 'c'}>{e.arr_iata}</td>
+                                                    <td key={e.flight_iata + 'd'}>{convertDate(e.dep_time_ts)}</td>
+                                                </tr>)
+                                            }))}
+                                        </tbody>
+                                    </table>
+                                )
                             /* (<>{data.response.map(e => <p key={e.flight_iata}>Vuelo: {e.flight_iata} Destino: {e.arr_iata} Hora Salida:{e.dep_time_ts}</p>)}</>) */
                             : null}
             </div>
