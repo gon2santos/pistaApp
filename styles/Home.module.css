@@ -38,6 +38,7 @@
   justify-content: space-around;
   text-align: center;
   border: 4px solid  rgb(82, 82, 82);
+  border-bottom: none;
   flex-direction: row;
   white-space: nowrap;
   width: 100%;
