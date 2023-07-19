@@ -4,8 +4,9 @@ import styles from '../styles/planillas.module.css';
 export default function Planillas() {
 
 
-    const [inputNames, setInputNames] = useState(["", "", "", ""]);
+    const [inputNames, setInputNames] = useState([{ name: "", colorCode: "" }, { name: "", colorCode: "" }, { name: "", colorCode: "" }, { name: "", colorCode: "" }]);
     const [inputCount, setInputCount] = useState(0);
+    const [stateTable, setStateTable] = useState();
 
     function daysInMonth(month, year) {
         return new Date(year, month, 0).getDate();
@@ -21,11 +22,12 @@ export default function Planillas() {
     let heading = ["Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"]
     var body = [];
     var rows = [];
+    var colorCodes = ["#f499c2", "#f69679", "#7bcdc9", "#fff699", "#fff699"]
 
     const countNames = () => {
         var count = 0;
         inputNames.forEach(element => {
-            element ? count++ : {};
+            element.name ? count++ : {};
         });
         setInputCount(count);
     }
@@ -47,16 +49,17 @@ export default function Planillas() {
                     rows.push("");
                 }
                 for (let a = 0; a < numDays; a++) {
-                    rows.push(inputNames[u]);
-                    rows.push(inputNames[u]);
+                    rows.push(inputNames[u].colorCode);
+                    rows.push(inputNames[u].colorCode);
                     u === 2 ? u = 0 : u++;
                 }
                 var len = rows.length;
                 for (let a = (day - 1); a < len; a++) {
                     if ((a - (day - 2)) <= numDays)
-                        rows[a] = (a - (day - 2)) + ". " + rows[a];
+                        rows[a] = { dayNum: (a - (day - 2)), value: rows[a] };
+                    /* rows[a] = (a - (day - 2)) + ". " + rows[a]; */
                     else
-                        rows[a] = "";
+                        rows[a] = { dayNum: "", value: "" };
                 }
                 body = [];
                 var t = 0;
@@ -91,7 +94,7 @@ export default function Planillas() {
                     <tbody>
                         {body.map((row, i) =>
                             <tr key={i}>
-                                {row.map((val, i) => <td key={i}>{val}</td>)}
+                                {row.map((e, i) => <td key={i} style={{ backgroundColor: colorCodes[parseInt(e.value)], color: "black" }} onClick={() => e.value++}>{e.dayNum}</td>)}
                             </tr>)}
                     </tbody>
                 </table>
@@ -105,18 +108,20 @@ export default function Planillas() {
             <p>Nombres: </p>
             <div className={styles.nombresContainer}>
                 <div><label htmlFor="input1">1:</label>
-                    <input type="text" id="input1" className={styles.nombresInput} onChange={(e) => { setInputNames([e.target.value, inputNames[1], inputNames[2], inputNames[3]]); countNames(); }} /><button>+días</button></div>
+                    <input type="text" id="input1" style={{ backgroundColor: colorCodes[inputNames[0].colorCode], color: "black", fontSize: "1.2rem", paddingLeft: "0.3rem", textAlign: "center" }} className={styles.nombresInput} onChange={(e) => { setInputNames([{ name: e.target.value, colorCode: "0" }, inputNames[1], inputNames[2], inputNames[3]]); countNames(); }} /></div>
                 <div><label htmlFor="input2">2:</label>
-                    <input type="text" id="input2" className={styles.nombresInput} onChange={(e) => { setInputNames([inputNames[0], e.target.value, inputNames[2], inputNames[3]]); countNames(); }} /><button>+días</button></div>
+                    <input type="text" id="input2" style={{ backgroundColor: colorCodes[inputNames[1].colorCode], color: "black", fontSize: "1.2rem", paddingLeft: "0.3rem", textAlign: "center" }} className={styles.nombresInput} onChange={(e) => { setInputNames([inputNames[0], { name: e.target.value, colorCode: "1" }, inputNames[2], inputNames[3]]); countNames(); }} /></div>
                 <div><label htmlFor="input3">3:</label>
-                    <input type="text" id="input3" className={styles.nombresInput} onChange={(e) => { setInputNames([inputNames[0], inputNames[1], e.target.value, inputNames[3]]); countNames(); }} /><button>+días</button></div>
+                    <input type="text" id="input3" style={{ backgroundColor: colorCodes[inputNames[2].colorCode], color: "black", fontSize: "1.2rem", paddingLeft: "0.3rem", textAlign: "center" }} className={styles.nombresInput} onChange={(e) => { setInputNames([inputNames[0], inputNames[1], { name: e.target.value, colorCode: "2" }, inputNames[3]]); countNames(); }} /></div>
                 <div><label htmlFor="input4">4:</label>
-                    <input type="text" id="input4" className={styles.nombresInput} onChange={(e) => { setInputNames([inputNames[0], inputNames[1], inputNames[2], e.target.value]); countNames(); }} /><button>+días</button></div>
+                    <input type="text" id="input4" style={{ backgroundColor: colorCodes[inputNames[3].colorCode], color: "black", fontSize: "1.2rem", paddingLeft: "0.3rem", textAlign: "center" }} className={styles.nombresInput} onChange={(e) => { setInputNames([inputNames[0], inputNames[1], inputNames[2], { name: e.target.value, colorCode: "3" }]); countNames(); }} /></div>
             </div>
 
             <hr className={styles.hrDashed}></hr>
 
             {(inputCount >= 3) ? renderTable() : <div></div>}
+
+            <p>{stateTable}</p>
 
         </div>
     )
