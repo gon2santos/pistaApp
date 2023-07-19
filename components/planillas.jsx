@@ -22,7 +22,7 @@ export default function Planillas() {
     let heading = ["Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"]
     var body = [];
     var rows = [];
-    var colorCodes = ["#f499c2", "#f69679", "#7bcdc9", "#fff699", "#fff699"]
+    var colorCodes = ["#7bcdc9", "#f69679", "#f499c2", "#fff699", "#fff699"]
 
     const countNames = () => {
         var count = 0;
