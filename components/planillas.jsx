@@ -140,19 +140,29 @@ export default function Planillas() {
         )
     }
 
+    var colorRotation = useRef([0, 1, 2, 3]);
+
+    const rotateColors = (index) => {
+        if (colorRotation[index] < 3)
+            colorRotation[index]++;
+        else
+            colorRotation[index] = 0;
+        setInputNames([{ name: inputNames[0].name, colorCode: colorRotation[0] }, { name: inputNames[1].name, colorCode: colorRotation[1] }, { name: inputNames[2].name, colorCode: colorRotation[2] }, { name: inputNames[3].name, colorCode: colorRotation[3] }]);
+    }
+
     return (
         <div>
             <h3>Creador de Planillas</h3>
             <p>Nombres: </p>
             <div className={styles.nombresContainer}>
                 <div><label htmlFor="input1">1:</label>
-                    <input type="text" id="input1" style={{ backgroundColor: colorCodes[inputNames[0].colorCode], color: "black", fontSize: "1.2rem", paddingLeft: "0.3rem", textAlign: "center" }} className={styles.nombresInput} onChange={(e) => { setInputNames([{ name: e.target.value, colorCode: "0" }, inputNames[1], inputNames[2], inputNames[3]]); countNames(); }} /></div>
+                    <input defaultValue="" type="text" id="input1" style={{ backgroundColor: colorCodes[colorRotation[0]], color: "black", fontSize: "1.2rem", paddingLeft: "0.3rem", textAlign: "center" }} className={styles.nombresInput} onChange={(e) => { setInputNames([{ name: e.target.value, colorCode: 0 }, inputNames[1], inputNames[2], inputNames[3]]); countNames(); }} onClick={(e) => rotateColors(0)} /></div>
                 <div><label htmlFor="input2">2:</label>
-                    <input type="text" id="input2" style={{ backgroundColor: colorCodes[inputNames[1].colorCode], color: "black", fontSize: "1.2rem", paddingLeft: "0.3rem", textAlign: "center" }} className={styles.nombresInput} onChange={(e) => { setInputNames([inputNames[0], { name: e.target.value, colorCode: "1" }, inputNames[2], inputNames[3]]); countNames(); }} /></div>
+                    <input defaultValue="" type="text" id="input2" style={{ backgroundColor: colorCodes[colorRotation[1]], color: "black", fontSize: "1.2rem", paddingLeft: "0.3rem", textAlign: "center" }} className={styles.nombresInput} onChange={(e) => { setInputNames([inputNames[0], { name: e.target.value, colorCode: 1 }, inputNames[2], inputNames[3]]); countNames(); }} onClick={(e) => rotateColors(1)} /></div>
                 <div><label htmlFor="input3">3:</label>
-                    <input type="text" id="input3" style={{ backgroundColor: colorCodes[inputNames[2].colorCode], color: "black", fontSize: "1.2rem", paddingLeft: "0.3rem", textAlign: "center" }} className={styles.nombresInput} onChange={(e) => { setInputNames([inputNames[0], inputNames[1], { name: e.target.value, colorCode: "2" }, inputNames[3]]); countNames(); }} /></div>
+                    <input defaultValue="" type="text" id="input3" style={{ backgroundColor: colorCodes[colorRotation[2]], color: "black", fontSize: "1.2rem", paddingLeft: "0.3rem", textAlign: "center" }} className={styles.nombresInput} onChange={(e) => { setInputNames([inputNames[0], inputNames[1], { name: e.target.value, colorCode: 2 }, inputNames[3]]); countNames(); }} onClick={(e) => rotateColors(2)} /></div>
                 <div><label htmlFor="input4">4:</label>
-                    <input type="text" id="input4" style={{ backgroundColor: colorCodes[inputNames[3].colorCode], color: "black", fontSize: "1.2rem", paddingLeft: "0.3rem", textAlign: "center" }} className={styles.nombresInput} onChange={(e) => { setInputNames([inputNames[0], inputNames[1], inputNames[2], { name: e.target.value, colorCode: "3" }]); countNames(); }} /></div>
+                    <input defaultValue="" type="text" id="input4" style={{ backgroundColor: colorCodes[colorRotation[3]], color: "black", fontSize: "1.2rem", paddingLeft: "0.3rem", textAlign: "center" }} className={styles.nombresInput} onChange={(e) => { setInputNames([inputNames[0], inputNames[1], inputNames[2], { name: e.target.value, colorCode: 3 }]); countNames(); }} onClick={(e) => rotateColors(3)} /></div>
                 <button onClick={() => mapColorsAndCreateTable()}>Crear</button>
             </div>
 
