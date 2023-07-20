@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import styles from '../styles/planillas.module.css';
 
 export default function Planillas() {
@@ -6,7 +6,8 @@ export default function Planillas() {
 
     const [inputNames, setInputNames] = useState([{ name: "", colorCode: "" }, { name: "", colorCode: "" }, { name: "", colorCode: "" }, { name: "", colorCode: "" }]);
     const [inputCount, setInputCount] = useState(0);
-    const [stateTable, setStateTable] = useState();
+    const [table, setTable] = useState();
+
 
     function daysInMonth(month, year) {
         return new Date(year, month, 0).getDate();
@@ -78,10 +79,23 @@ export default function Planillas() {
                 break;
         }
     }
+    var colorArray = useRef([]);
+    const mapColors = () => {
+        colorArray = [];
+        body.forEach(row => {
+            row.forEach(
+                cell => {
+                    colorArray.push(cell.value);
+                }
+            )
+        });
+        console.log(colorArray);
+    }
 
     const renderTable = () => {
         populateTable();
-        return (
+        /* mapColors(); */
+        setTable(
             <div>
                 <h3>{fecha}</h3>
                 <table>
@@ -94,7 +108,31 @@ export default function Planillas() {
                     <tbody>
                         {body.map((row, i) =>
                             <tr key={i}>
-                                {row.map((e, i) => <td key={i} style={{ backgroundColor: colorCodes[parseInt(e.value)], color: "black" }} onClick={() => e.value++}>{e.dayNum}</td>)}
+                                {row.map((e, i) => <td key={i} style={{ backgroundColor: colorCodes[colorArray[e.dayNum + 4]], color: "black", userSelect: "none" }} onClick={() => { (colorArray[e.dayNum + 4] === 3) ? (colorArray[e.dayNum + 4] = 0) : (colorArray[e.dayNum + 4]++); renderTable(); }}>{e.dayNum}</td>)}
+                            </tr>)}
+                    </tbody>
+                </table>
+            </div>
+        )
+    }
+
+    const mapColorsAndCreateTable = () => {
+        populateTable();
+        mapColors();
+        setTable(
+            <div>
+                <h3>{fecha}</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            {heading.map((head, i) =>
+                                <th key={i}>{head}</th>)}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {body.map((row, i) =>
+                            <tr key={i}>
+                                {row.map((e, i) => <td key={i} style={{ backgroundColor: colorCodes[colorArray[e.dayNum + 4]], color: "black", userSelect: "none" }} onClick={() => { (colorArray[e.dayNum + 4] === 3) ? (colorArray[e.dayNum + 4] = 0) : (colorArray[e.dayNum + 4]++); renderTable(); }}>{e.dayNum}</td>)}
                             </tr>)}
                     </tbody>
                 </table>
@@ -115,13 +153,12 @@ export default function Planillas() {
                     <input type="text" id="input3" style={{ backgroundColor: colorCodes[inputNames[2].colorCode], color: "black", fontSize: "1.2rem", paddingLeft: "0.3rem", textAlign: "center" }} className={styles.nombresInput} onChange={(e) => { setInputNames([inputNames[0], inputNames[1], { name: e.target.value, colorCode: "2" }, inputNames[3]]); countNames(); }} /></div>
                 <div><label htmlFor="input4">4:</label>
                     <input type="text" id="input4" style={{ backgroundColor: colorCodes[inputNames[3].colorCode], color: "black", fontSize: "1.2rem", paddingLeft: "0.3rem", textAlign: "center" }} className={styles.nombresInput} onChange={(e) => { setInputNames([inputNames[0], inputNames[1], inputNames[2], { name: e.target.value, colorCode: "3" }]); countNames(); }} /></div>
+                <button onClick={() => mapColorsAndCreateTable()}>Crear</button>
             </div>
 
             <hr className={styles.hrDashed}></hr>
 
-            {(inputCount >= 3) ? renderTable() : <div></div>}
-
-            <p>{stateTable}</p>
+            <>{table}</>
 
         </div>
     )
